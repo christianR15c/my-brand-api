@@ -21,4 +21,4 @@ app.use(bodyParser.json());
 app.use('/api/user', authRouter);
 app.use('/api/articles', articleRouter);
 app.use('/api/contact', contactRouter);
-app.listen(9000, () => console.log('listening to port 9000'));
+app.listen(process.env.PORT || 9000, () => console.log('listening to port'));
