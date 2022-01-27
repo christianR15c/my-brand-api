@@ -14,6 +14,10 @@ mongoose.connect(dbURI, () => {
 });
 
 // middlewares
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 app.use('/images', express.static('images'));
 app.use(bodyParser.json());
 
