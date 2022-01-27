@@ -15,12 +15,9 @@ mongoose.connect(dbURI, () => {
 
 // middlewares
 app.use((req, res, next) => {
-  res.headers({
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
-    'Access-Control-Allow-Headers':
-      'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
-  });
+  res.header('Access-Control-Allow-Origin', '*');
+  // res.header('Access-Control-Allow-Origin', '*');
+  // res.header('Access-Control-Allow-Origin', '*');
   next();
 });
 app.use('/images', express.static('images'));
