@@ -48,15 +48,15 @@ router.post('/login', async (req, res) => {
   if (!validPassword) return res.status(404).send('Invalid password');
 
   // creating a token
-  const token = jwt.sign({ _id: user._id }, `${process.env.SECRET_TOKEN}`);
+  let token = jwt.sign({ _id: user._id }, `${process.env.SECRET_TOKEN}`);
 
   // checking if user is admin
-  if (user.isAdmin)
-    return res
-      .header('auth-token', token)
-      .send(`${user.name} logged in ! "ADMIN"`, token);
+  if (user.isAdmin) {
+    let adminToken = jwt.sign({ _id: user._id }, `${process.env.ADMIN_TOKEN}`);
+    return res.header('auth-token', adminToken).send(adminToken);
+  }
 
-  res.header('auth-token', token).send(token);
+  res.header('auth-token', token).header('isAdmin', false).send(token);
 });
 
 module.exports = router;
