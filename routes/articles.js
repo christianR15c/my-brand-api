@@ -25,6 +25,6 @@ router.get('/', articleController.gett_all_article);
 router.get('/:id', articleController.get_single_article);
 
 // commenting on an article
-router.put('/comment/:id', verify, articleController.comment_article);
+router.post('/comment/:id', verify, articleController.comment_article);
 
 module.exports = router;
