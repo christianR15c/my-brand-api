@@ -19,21 +19,21 @@ const create_article = (req, res) => {
 const update_article = (req, res) => {
   const id = req.params.id;
   Article.findByIdAndUpdate(id, req.body)
-    .then((article) => res.json(article))
+    .then((article) => res.json({ article }))
     .catch((err) => console.log(err));
 };
 
 const delete_article = (req, res) => {
   const id = req.params.id;
   Article.findByIdAndDelete(id)
-    .then((article) => res.josn(article))
+    .then((article) => res.josn({ article }))
     .catch((err) => console.log(err));
 };
 
 const gett_all_article = (req, res) => {
   Article.find()
     .sort({ createdAt: -1 })
-    .then((result) => res.json(result))
+    .then((result) => res.json({ result }))
     .catch((err) => console.log(err));
 };
 
@@ -52,7 +52,7 @@ const get_single_article = (req, res) => {
 const comment_article = (req, res) => {
   // validating comment
   const { error } = commentValidation(req.body);
-  if (error) return res.status(404).send(error.details[0].message);
+  if (error) return res.status(40).send(error.details[0].message);
 
   const id = req.params.id;
   const comment = {

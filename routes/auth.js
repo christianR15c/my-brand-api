@@ -29,7 +29,7 @@ router.post('/register', async (req, res) => {
   });
   user
     .save()
-    .then((user) => res.json(user))
+    .then((user) => res.json({ user }))
     .catch((err) => {
       res.status(400).json(err);
       console.log(err);
@@ -39,7 +39,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   // validating inputs (name, email and password)
   const { error } = loginValidation(req.body);
-  if (error) return res.status(400).json(error.details[0].message);
+  if (error) return res.status(400).json({ message: error.details[0].message });
 
   // checking if a user exist
   const user = await User.findOne({ email: req.body.email });
