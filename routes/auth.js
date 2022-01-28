@@ -27,7 +27,7 @@ router.post('/register', async (req, res) => {
   });
   user
     .save()
-    .then((user) => res.send(`${user.name} added successfully`))
+    .then((user) => res.send(user))
     .catch((err) => {
       res.status(400).send(err);
       console.log(err);
@@ -53,10 +53,16 @@ router.post('/login', async (req, res) => {
   // checking if user is admin
   if (user.isAdmin) {
     let adminToken = jwt.sign({ _id: user._id }, `${process.env.ADMIN_TOKEN}`);
-    return res.header('auth-token', adminToken).send(adminToken);
+    return res.header('auth-token', adminToken).send({
+      adminToken,
+      user,
+    });
   }
 
-  res.header('auth-token', token).header('isAdmin', false).send(token);
+  res.header('auth-token', token).header('isAdmin', false).send({
+    user,
+    token,
+  });
 });
 
 module.exports = router;

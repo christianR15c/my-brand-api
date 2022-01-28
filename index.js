@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 const authRouter = require('./routes/auth');
 const articleRouter = require('./routes/articles');
@@ -14,16 +15,7 @@ mongoose.connect(dbURI, () => {
 });
 
 // middlewares
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  res.header({
-    'Access-Control-Allow-Headers':
-      'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
-  });
-  // res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
+app.use(cors());
 app.use('/images', express.static('images'));
 app.use(bodyParser.json());
 

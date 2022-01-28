@@ -9,25 +9,24 @@ const create_article = (req, res) => {
     content: req.body.content,
     articleImage: req.file.path,
   });
-  article
-    .save()
-    .then((article) =>
-      res.send(`Article with Title: ${article.title}, saved successfuly`)
-    );
+  article.save().then((article) =>
+    res.send({
+      status: `saved successfuly`,
+      article,
+    })
+  );
 };
 const update_article = (req, res) => {
   const id = req.params.id;
   Article.findByIdAndUpdate(id, req.body)
-    .then((article) => res.send(`successfully updated`))
+    .then((article) => res.send(article))
     .catch((err) => console.log(err));
 };
 
 const delete_article = (req, res) => {
   const id = req.params.id;
   Article.findByIdAndDelete(id)
-    .then((article) =>
-      res.send(`${article.title} article is successfuly deleted`)
-    )
+    .then((article) => res.send(article))
     .catch((err) => console.log(err));
 };
 
@@ -41,7 +40,12 @@ const gett_all_article = (req, res) => {
 const get_single_article = (req, res) => {
   const id = req.params.id;
   Article.findById(id)
-    .then((result) => res.send(result))
+    .then((result) =>
+      res.send({
+        status: 'success',
+        result,
+      })
+    )
     .catch((err) => console.log(err));
 };
 
@@ -59,7 +63,12 @@ const comment_article = (req, res) => {
     $push: { comments: comment },
   })
     .populate('comments.postedBy', 'name')
-    .then((article) => res.send(`successfully updated`))
+    .then((article) =>
+      res.send({
+        status: `successfully updated`,
+        article,
+      })
+    )
     .catch((err) => console.log(err));
 };
 
