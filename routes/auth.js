@@ -10,11 +10,13 @@ const {
 router.post('/register', async (req, res) => {
   // validating inputs (name, email and password)
   const { error } = signupValidation(req.body);
-  if (error) return res.status(404).send(error.details[0].message);
+  if (error)
+    return res.status(400).json({ messsage: error.details[0].message });
 
   // checking if the user is already in database
   const isEmailExist = await User.findOne({ email: req.body.email });
-  if (isEmailExist) return res.status(404).send(`Account already exists`);
+  if (isEmailExist)
+    return res.status(400).json({ message: 'Account already exists' });
 
   // Hashing the password
   const salt = await bcrypt.genSalt(10);
@@ -27,9 +29,9 @@ router.post('/register', async (req, res) => {
   });
   user
     .save()
-    .then((user) => res.send(user))
+    .then((user) => res.json(user))
     .catch((err) => {
-      res.status(400).send(err);
+      res.status(400).json(err);
       console.log(err);
     });
 });
@@ -37,15 +39,16 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   // validating inputs (name, email and password)
   const { error } = loginValidation(req.body);
-  if (error) return res.status(404).send(error.details[0].message);
+  if (error) return res.status(400).json(error.details[0].message);
 
   // checking if a user exist
   const user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(404).send(`user doesn't exists`);
+  if (!user) return res.status(400).json({ message: `user doesn't exists` });
 
   // checking if password is correct
   const validPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!validPassword) return res.status(404).send('Invalid password');
+  if (!validPassword)
+    return res.status(400).json({ message: 'Invalid password' });
 
   // creating a token
   let token = jwt.sign({ _id: user._id }, `${process.env.SECRET_TOKEN}`);
@@ -53,13 +56,13 @@ router.post('/login', async (req, res) => {
   // checking if user is admin
   if (user.isAdmin) {
     let adminToken = jwt.sign({ _id: user._id }, `${process.env.ADMIN_TOKEN}`);
-    return res.header('auth-token', adminToken).send({
+    return res.header('auth-token', adminToken).json({
       adminToken,
       user,
     });
   }
 
-  res.header('auth-token', token).header('isAdmin', false).send({
+  res.header('auth-token', token).header('isAdmin', false).json({
     user,
     token,
   });

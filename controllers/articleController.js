@@ -10,7 +10,7 @@ const create_article = (req, res) => {
     articleImage: req.file.path,
   });
   article.save().then((article) =>
-    res.send({
+    res.json({
       status: `saved successfuly`,
       article,
     })
@@ -19,21 +19,21 @@ const create_article = (req, res) => {
 const update_article = (req, res) => {
   const id = req.params.id;
   Article.findByIdAndUpdate(id, req.body)
-    .then((article) => res.send(article))
+    .then((article) => res.json(article))
     .catch((err) => console.log(err));
 };
 
 const delete_article = (req, res) => {
   const id = req.params.id;
   Article.findByIdAndDelete(id)
-    .then((article) => res.send(article))
+    .then((article) => res.josn(article))
     .catch((err) => console.log(err));
 };
 
 const gett_all_article = (req, res) => {
   Article.find()
     .sort({ createdAt: -1 })
-    .then((result) => res.send(result))
+    .then((result) => res.json(result))
     .catch((err) => console.log(err));
 };
 
@@ -41,7 +41,7 @@ const get_single_article = (req, res) => {
   const id = req.params.id;
   Article.findById(id)
     .then((result) =>
-      res.send({
+      res.json({
         status: 'success',
         result,
       })
@@ -64,7 +64,7 @@ const comment_article = (req, res) => {
   })
     .populate('comments.postedBy', 'name')
     .then((article) =>
-      res.send({
+      res.json({
         status: `successfully updated`,
         article,
       })
