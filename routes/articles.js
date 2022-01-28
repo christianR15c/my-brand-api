@@ -6,7 +6,7 @@ const upload = require('../controllers/upload');
 
 // creating an article
 router.post(
-  '/create',
+  '/',
   verifyAdmin,
   upload.single('article-image'),
   articleController.create_article
