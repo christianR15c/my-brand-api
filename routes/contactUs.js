@@ -6,11 +6,11 @@ const { contactUsValidation } = require('../controllers/validation');
 // sending a query or contacting us
 router.post('/post', verify, (req, res) => {
   const { error } = contactUsValidation(req.body);
-  if (error) return res.status(404).send(error.details[0].message);
+  if (error) return res.status(400).json({ message: error.details[0].message });
   const contactUs = new ContactUs(req.body);
   contactUs
     .save()
-    .then((query) => res.send(query))
+    .then((query) => res.json({ query }))
     .catch((err) => console.log(query));
 });
 
@@ -18,7 +18,7 @@ router.post('/post', verify, (req, res) => {
 router.get('/queries', (req, res) => {
   ContactUs.find()
     .sort({ createdAt: -1 })
-    .then((queries) => res.send(queries))
+    .then((queries) => res.json({ queries }))
     .catch((err) => console.log(err));
 });
 
@@ -26,9 +26,7 @@ router.get('/queries', (req, res) => {
 router.delete('/delete/:id', (req, res) => {
   const id = req.params.id;
   ContactUs.findByIdAndDelete(id)
-    .then((query) =>
-      res.send(`a query of ${query.name} is successfuly deleted`)
-    )
+    .then((query) => res.json({ message: `a query of is successfuly deleted` }))
     .catch((err) => console.log(err));
 });
 
