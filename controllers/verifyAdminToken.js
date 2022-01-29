@@ -4,7 +4,7 @@ module.exports = (req, res, next) => {
   const token = req.header('auth-token');
   if (!token)
     return res
-      .status(401)
+      .status(400)
       .send('Access Denied!, Only Admin can perform this task');
 
   try {

@@ -4,14 +4,23 @@ const { commentValidation } = require('../controllers/validation');
 // creating an article
 const create_article = (req, res) => {
   // Creating new article
-  const article = new Article({
-    title: req.body.title,
-    content: req.body.content,
-    articleImage: req.file.path,
-  });
+  let article;
+  if (req.file) {
+    article = new Article({
+      title: req.body.title,
+      content: req.body.content,
+      articleImage: req.file.path,
+    });
+  } else {
+    article = new Article({
+      title: req.body.title,
+      content: req.body.content,
+    });
+  }
+
   article.save().then((article) =>
     res.json({
-      status: `saved successfuly`,
+      status: 'saved successfuly',
       article,
     })
   );
@@ -65,7 +74,7 @@ const comment_article = (req, res) => {
     .populate('comments.postedBy', 'name')
     .then((article) =>
       res.json({
-        status: `successfully updated`,
+        status: 'successfully updated',
         article,
       })
     )

@@ -2,13 +2,13 @@ const router = require('express').Router();
 const verify = require('../controllers/verifyToken');
 const verifyAdmin = require('../controllers/verifyAdminToken');
 const articleController = require('../controllers/articleController');
-const upload = require('../controllers/upload');
+// const upload = require('../controllers/upload');
 
 // creating an article
 router.post(
   '/',
-  verifyAdmin,
-  upload.single('article-image'),
+  verifyAdmin /*
+  upload.single('article-image'),*/,
   articleController.create_article
 );
 
