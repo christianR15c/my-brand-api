@@ -35,7 +35,7 @@ const update_article = (req, res) => {
 const delete_article = (req, res) => {
   const id = req.params.id;
   Article.findByIdAndDelete(id)
-    .then((article) => res.json({ article }))
+    .then((article) => res.json(`article with id: ${id} deleted successfully`))
     .catch((err) => console.log(err));
 };
 
