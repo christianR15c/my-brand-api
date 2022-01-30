@@ -9,7 +9,7 @@ const create_article = (req, res) => {
     article = new Article({
       title: req.body.title,
       content: req.body.content,
-      articleImage: req.file.path,
+      articleImage,
     });
   } else {
     article = new Article({
@@ -65,7 +65,7 @@ const get_single_article = (req, res) => {
 const comment_article = (req, res) => {
   // validating comment
   const { error } = commentValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  if (error) return res.status(400).json({ message: error.details[0].message });
 
   const id = req.params.id;
   const comment = {

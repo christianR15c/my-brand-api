@@ -27,4 +27,6 @@ router.get('/:id', articleController.get_single_article);
 // commenting on an article
 router.post('/comment/:id', verify, articleController.comment_article);
 
+// get all comments
+router.get('/comment');
 module.exports = router;
